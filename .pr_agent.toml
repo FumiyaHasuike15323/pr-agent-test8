@@ -10,11 +10,22 @@ extra_instructions = """
 - パフォーマンスのボトルネック
 - コーディング規約違反
 """
+# レビューコメントに「セキュリティ」や「工数」のラベルを自動で付ける機能を無効化
+enable_review_labels_security = false
+enable_review_labels_effort = false
 
 # PRの説明文を自動生成する機能に関する設定
 [pr_description]
 # `extra_instructions` で日本語での出力を指示
 extra_instructions = "プルリクエストのタイトルと説明を日本語で生成してください。"
+
+# 【追加】コード改善提案 (/improve) に関する設定
+[pr_code_suggestions]
+extra_instructions = "提案するコードの解説を日本語でお願いします。"
+
+# 【追加】CHANGELOG更新 (/update_changelog) に関する設定
+[pr_update_changelog]
+extra_instructions = "CHANGELOGエントリーを日本語で生成してください。"
 
 # その他、便利なコマンドの設定
 [github_action_config]
