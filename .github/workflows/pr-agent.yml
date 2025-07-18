@@ -25,15 +25,12 @@ jobs:
           PR_AGENT_CONFIG: |
             pr_description:
               publish_description: true
-              add_original_user_description: true
-              use_description_markers: true
+              extra_instructions: "すべての回答は日本語で出力してください。"
             pr_reviewer:
               publish_review: true
-              require_focused_review: false
-              require_score_review: false
-              require_tests_review: false
-              require_security_review: false
               auto_review: true
+              extra_instructions: "すべての回答は日本語で出力してください。"
             pr_improve:
               publish_improve: true
               auto_improve: true
+              extra_instructions: "すべての回答は日本語で出力してください。"
