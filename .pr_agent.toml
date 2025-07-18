@@ -1,0 +1,25 @@
+# PR-Agent の設定ファイル
+
+# PRのレビュー機能に関する設定
+[pr_reviewer]
+# `extra_instructions` でプロンプトを調整し、日本語での出力を指示
+extra_instructions = """
+レビューは日本語でお願いします。
+特に以下の観点に注目してください：
+- セキュリティリスク
+- パフォーマンスのボトルネック
+- コーディング規約違反
+"""
+
+# PRの説明文を自動生成する機能に関する設定
+[pr_description]
+# `extra_instructions` で日本語での出力を指示
+extra_instructions = "プルリクエストのタイトルと説明を日本語で生成してください。"
+
+# その他、便利なコマンドの設定
+[github_action_config]
+# /review コマンドを叩かなくても、PR作成時に自動でレビューを開始する
+auto_review = true
+
+# /describe コマンドを叩かなくても、PR作成時に自動で説明文を生成する
+auto_describe = true

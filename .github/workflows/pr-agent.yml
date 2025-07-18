@@ -1,4 +1,4 @@
-name: PR Agent
+name: PR-Agent
 
 on:
   pull_request:
@@ -8,29 +8,20 @@ on:
 
 jobs:
   pr_agent_job:
-    if: ${{ github.event.sender.type != 'Bot' }}
+    # ボットからのイベントは除外する
+    if: github.event.sender.type != 'Bot'
     runs-on: ubuntu-latest
     permissions:
       issues: write
       pull-requests: write
-      contents: read
-    name: Run PR Agent on every pull request, respond to user comments
+      contents: write
     steps:
-      - name: PR Agent action step
-        id: pragent
+      - name: PR Agent
+        id: pr-agent
         uses: Codium-ai/pr-agent@main
         env:
+          # 上記で設定したシークレット名を指定
           OPENAI_KEY: ${{ secrets.OPENAI_KEY }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          PR_AGENT_CONFIG: |
-            pr_description:
-              publish_description: true
-              extra_instructions: "すべての回答は日本語で出力してください。"
-            pr_reviewer:
-              publish_review: true
-              auto_review: true
-              extra_instructions: "すべての回答は日本語で出力してください。"
-            pr_improve:
-              publish_improve: true
-              auto_improve: true
-              extra_instructions: "すべての回答は日本語で出力してください。"
+          # tomlファイルによる設定を有効化
+          CONFIG_FILE: .pr_agent.toml
