@@ -1,40 +1,39 @@
-name: PR Agent - Auto Review
+name: PR Agent
 
 on:
-  # PRが開かれたり、レビューの準備ができたときに実行
   pull_request:
     types: [opened, reopened, ready_for_review]
-  # PR上で "/review" などのコメントが投稿されたときに実行
   issue_comment:
-    types: [created]
-
-permissions:
-  issues: write
-  pull-requests: write
-  contents: read # このワークフローでは書き込みは不要
+    types: [created, edited]
 
 jobs:
   pr_agent_job:
-    # Botからのイベントは無視する
-    if: github.event.sender.type != 'Bot'
+    if: ${{ github.event.sender.type != 'Bot' }}
     runs-on: ubuntu-latest
+    permissions:
+      issues: write
+      pull-requests: write
+      contents: read
+    name: Run PR Agent on every pull request, respond to user comments
     steps:
-      - name: PR Agent
+      - name: PR Agent action step
+        id: pragent
         uses: Codium-ai/pr-agent@main
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          # GitHub Secretsに設定したOpenAIのAPIキー
           OPENAI_KEY: ${{ secrets.OPENAI_KEY }}
-          # PR作成時に自動で実行する機能を指定
-          GITHUB_ACTION.AUTO_DESCRIBE: "true"
-          GITHUB_ACTION.AUTO_REVIEW: "true"
-          GITHUB_ACTION.AUTO_IMPROVE: "true"
-          PR_DESCRIPTION.EXTRA_INSTRUCTIONS: |
-          プルリクエストの変更内容を分析し、以下の項目を日本語で記述してください。
-          - **概要**: 変更の目的と全体像
-          - **主な変更点**: ファイルごとの具体的な変更内容
-          - **種類**: (例: 機能追加, バグ修正, リファクタリング)
-          PR_REVIEWER.EXTRA_INSTRUCTIONS: |
-          あなたは経験豊富なソフトウェアエンジニアです。日本語で、丁寧かつ建設的なレビューをしてください。
-          PR_IMPROVER.EXTRA_INSTRUCTIONS: |
-          コードの改善案を提示してください。その際、なぜそのように変更するのか、理由も日本語で簡潔に説明してください。
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR_AGENT_CONFIG: |
+            pr_description:
+              publish_description: true
+              add_original_user_description: true
+              use_description_markers: true
+            pr_reviewer:
+              publish_review: true
+              require_focused_review: false
+              require_score_review: false
+              require_tests_review: false
+              require_security_review: false
+              auto_review: true
+            pr_improve:
+              publish_improve: true
+              auto_improve: true
