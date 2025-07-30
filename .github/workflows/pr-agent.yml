@@ -7,17 +7,16 @@ on:
     types: [created, edited]
 
 jobs:
-  # stagingブランチからmasterブランチへのPRの場合の自動実行
-  pr_agent_auto_job:
-    if: github.event.sender.type != 'Bot' && github.base_ref == 'main' && github.head_ref == 'develop'
+  pr_agent_manual_job:
+    if: github.event.sender.type != 'Bot' && github.event_name == 'issue_comment' && github.event.issue.pull_request
     runs-on: ubuntu-latest
     permissions:
       issues: write
       pull-requests: write
       contents: write
     steps:
-      - name: PR Agent (Auto)
-        id: pr-agent-auto
+      - name: PR Agent (Manual)
+        id: pr-agent-manual
         uses: Codium-ai/pr-agent@main
         env:
           OPENAI_KEY: ${{ secrets.OPENAI_KEY }}
@@ -25,4 +24,3 @@ jobs:
           github_action_config.auto_review: "false"
           github_action_config.auto_describe: "false"
           github_action_config.auto_improve: "false"
-          PR_AGENT.COMMAND: "/update_changelog"
