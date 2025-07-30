@@ -22,8 +22,10 @@ jobs:
         env:
           OPENAI_KEY: ${{ secrets.OPENAI_KEY }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          args: "describe && update_changelog"
+          github_action_config.auto_review: "false"
+          github_action_config.auto_describe: "false"
+          github_action_config.auto_improve: "false"
+
 
   # # その他のPRや手動コマンドの場合
   # pr_agent_manual_job:
