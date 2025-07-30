@@ -27,18 +27,18 @@ jobs:
           github_action_config.auto_improve: "false"
 
 
-  # # その他のPRや手動コマンドの場合
-  # pr_agent_manual_job:
-  #   if: github.event.sender.type != 'Bot' && !(github.base_ref == 'master' && github.head_ref == 'staging')
-  #   runs-on: ubuntu-latest
-  #   permissions:
-  #     issues: write
-  #     pull-requests: write
-  #     contents: write
-  #   steps:
-  #     - name: PR Agent (Manual)
-  #       id: pr-agent-manual
-  #       uses: Codium-ai/pr-agent@main
-  #       env:
-  #         OPENAI_KEY: ${{ secrets.OPENAI_KEY }}
-  #         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  # その他のPRや手動コマンドの場合
+  pr_agent_manual_job:
+    if: github.event.sender.type != 'Bot' && !(github.base_ref == 'master' && github.head_ref == 'staging')
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+      pull-requests: write
+      contents: write
+    steps:
+      - name: PR Agent (Manual)
+        id: pr-agent-manual
+        uses: Codium-ai/pr-agent@main
+        env:
+          OPENAI_KEY: ${{ secrets.OPENAI_KEY }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
