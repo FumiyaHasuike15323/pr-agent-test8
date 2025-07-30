@@ -1,29 +1,34 @@
-name: PR-Agent
+name: PR-Agent (Manual Only for staging-to-master)
 
 on:
-  pull_request:
-    types: [opened, reopened, ready_for_review]
   issue_comment:
-    types: [created, edited]
-  branches:
-    - 'main'
+    types: [created]
 
 jobs:
-  pr_agent_job:
-    # ボットからのイベントは無視し、PRに関連するイベントの場合のみ実行
-    if: github.event.sender.type != 'Bot' && (github.event_name == 'pull_request' || github.event.issue.pull_request)
+  pr_agent_manual_command:
+    if: github.event.sender.type != 'Bot'
     runs-on: ubuntu-latest
     permissions:
       issues: write
       pull-requests: write
       contents: write
     steps:
-      - name: PR Agent
+      # ステップ1: コメントが投稿されたPRのブランチ情報を取得する
+      - name: Get PR Info
+        id: pr_info
+        uses: juliangruber/get-pull-request-info-action@v1
+        with:
+          pull-request-number: ${{ github.event.issue.number }}
+
+      # ステップ2: 取得したブランチ情報が staging -> master の場合にのみPR-Agentを実行
+      - name: Run PR-Agent on Manual Command
         id: pr-agent
+        if: steps.pr_info.outputs.base-ref-name == 'main' && steps.pr_info.outputs.head-ref-name == 'develop'
         uses: Codium-ai/pr-agent@main
         env:
           OPENAI_KEY: ${{ secrets.OPENAI_KEY }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          github_action_config.auto_review: "false"
+          # 全ての自動実行機能を無効化
           github_action_config.auto_describe: "false"
+          github_action_config.auto_review: "false"
           github_action_config.auto_improve: "false"
