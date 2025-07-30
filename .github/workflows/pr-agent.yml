@@ -3,6 +3,8 @@ name: PR-Agent
 on:
   pull_request:
     types: [opened, reopened, ready_for_review]
+    branches:
+      - main
   issue_comment:
     types: [created, edited]
 
@@ -24,3 +26,5 @@ jobs:
           github_action_config.auto_review: "false"
           github_action_config.auto_describe: "false"
           github_action_config.auto_improve: "false"
+
+
