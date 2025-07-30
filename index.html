@@ -4,34 +4,429 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Simple Web App</title>
+  <title>Rich Web App</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      background: rgba(255, 255, 255, 0.95);
+      border-radius: 20px;
+      padding: 40px;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+      backdrop-filter: blur(10px);
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+
+    h1 {
+      color: #2c3e50;
+      font-size: 2.5em;
+      margin-bottom: 10px;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+      animation: fadeInDown 1s ease-out;
+    }
+
+    .subtitle {
+      color: #7f8c8d;
+      font-size: 1.2em;
+      margin-bottom: 30px;
+      animation: fadeInUp 1s ease-out 0.3s both;
+    }
+
+    .content-section {
+      margin-bottom: 40px;
+      padding: 30px;
+      background: linear-gradient(145deg, #f8f9fa, #e9ecef);
+      border-radius: 15px;
+      border: 1px solid #dee2e6;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .content-section:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+    }
+
+    .button-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 15px;
+      margin: 30px 0;
+    }
+
+    .btn {
+      padding: 15px 25px;
+      border: none;
+      border-radius: 10px;
+      font-size: 1.1em;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+      background: linear-gradient(45deg, #3498db, #2980b9);
+      color: white;
+      box-shadow: 0 4px 15px rgba(52, 152, 219, 0.3);
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(52, 152, 219, 0.4);
+    }
+
+    .btn:active {
+      transform: translateY(0);
+    }
+
+    .btn::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+      transition: left 0.5s;
+    }
+
+    .btn:hover::before {
+      left: 100%;
+    }
+
+    .list-section {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 30px;
+      margin: 30px 0;
+    }
+
+    .list-container {
+      background: white;
+      padding: 25px;
+      border-radius: 15px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s ease;
+    }
+
+    .list-container:hover {
+      transform: scale(1.02);
+    }
+
+    .list-title {
+      color: #2c3e50;
+      font-size: 1.3em;
+      margin-bottom: 15px;
+      border-bottom: 2px solid #3498db;
+      padding-bottom: 10px;
+    }
+
+    ul {
+      list-style: none;
+    }
+
+    li {
+      padding: 12px 0;
+      border-bottom: 1px solid #ecf0f1;
+      color: #34495e;
+      transition: all 0.3s ease;
+      position: relative;
+      padding-left: 25px;
+    }
+
+    li:before {
+      content: '▶';
+      position: absolute;
+      left: 0;
+      color: #3498db;
+      font-weight: bold;
+    }
+
+    li:hover {
+      background: #f8f9fa;
+      padding-left: 30px;
+      color: #2c3e50;
+    }
+
+    .counter-section {
+      text-align: center;
+      margin: 40px 0;
+      padding: 30px;
+      background: linear-gradient(145deg, #e8f5e8, #d4edda);
+      border-radius: 15px;
+      border: 1px solid #c3e6cb;
+    }
+
+    .counter {
+      font-size: 3em;
+      font-weight: bold;
+      color: #27ae60;
+      margin: 20px 0;
+    }
+
+    .counter-btn {
+      background: linear-gradient(45deg, #27ae60, #229954);
+      margin: 0 10px;
+    }
+
+    .counter-btn:hover {
+      box-shadow: 0 8px 25px rgba(39, 174, 96, 0.4);
+    }
+
+    .form-section {
+      background: linear-gradient(145deg, #fff5f5, #ffe6e6);
+      border: 1px solid #f5c6cb;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .form-label {
+      display: block;
+      margin-bottom: 8px;
+      color: #721c24;
+      font-weight: 600;
+    }
+
+    .form-input {
+      width: 100%;
+      padding: 12px;
+      border: 2px solid #f5c6cb;
+      border-radius: 8px;
+      font-size: 1em;
+      transition: border-color 0.3s ease;
+    }
+
+    .form-input:focus {
+      outline: none;
+      border-color: #dc3545;
+      box-shadow: 0 0 0 3px rgba(220, 53, 69, 0.1);
+    }
+
+    .submit-btn {
+      background: linear-gradient(45deg, #dc3545, #c82333);
+      width: 100%;
+      margin-top: 10px;
+    }
+
+    .submit-btn:hover {
+      box-shadow: 0 8px 25px rgba(220, 53, 69, 0.4);
+    }
+
+    @keyframes fadeInDown {
+      from {
+        opacity: 0;
+        transform: translateY(-30px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .notification {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      padding: 15px 25px;
+      background: #28a745;
+      color: white;
+      border-radius: 10px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+      transform: translateX(400px);
+      transition: transform 0.3s ease;
+      z-index: 1000;
+    }
+
+    .notification.show {
+      transform: translateX(0);
+    }
+
+    @media (max-width: 768px) {
+      .container {
+        padding: 20px;
+        margin: 10px;
+      }
+
+      h1 {
+        font-size: 2em;
+      }
+
+      .button-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .list-section {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
 </head>
 
 <body>
-  <h1>Hello, World!</h1>
-  <p>This is a test application.</p>
+  <div class="container">
+    <div class="header">
+      <h1>Rich Web Application</h1>
+      <p class="subtitle">モダンでインタラクティブなWebアプリケーション</p>
+    </div>
 
-  <h1>Hello, World!</h1>
-  <p>This is a test application.</p>
+    <div class="content-section">
+      <h2>インタラクティブボタン</h2>
+      <p>以下のボタンをクリックして、様々な機能をお試しください。</p>
+      <div class="button-grid">
+        <button class="btn" onclick="showNotification('ボタン1がクリックされました！')">ボタン1</button>
+        <button class="btn" onclick="showNotification('ボタン2がクリックされました！')">ボタン2</button>
+        <button class="btn" onclick="showNotification('ボタン3がクリックされました！')">ボタン3</button>
+        <button class="btn" onclick="showNotification('ボタン4がクリックされました！')">ボタン4</button>
+        <button class="btn" onclick="showNotification('ボタン5がクリックされました！')">ボタン5</button>
+        <button class="btn" onclick="showNotification('ボタン6がクリックされました！')">ボタン6</button>
+      </div>
+    </div>
 
-  <button type="button" onclick="alert('ボタン1がクリックされました！')">ボタン1</button>
-  <button type="button" onclick="alert('ボタン2がクリックされました！')">ボタン2</button>
-  <button type="button" onclick="alert('ボタン3がクリックされました！')">ボタン3</button>
-  <button type="button" onclick="alert('ボタン4がクリックされました！')">ボタン4</button>
-  <button type="button" onclick="alert('ボタン5がクリックされました！')">ボタン5</button>
-  <button type="button" onclick="alert('ボタン6がクリックされました！')">ボタン6</button>
-  <h1>Hello, World!</h1>
-  <p>This is a test application.</p>
-  <ul>
-    <li>アイテムA</li>
-    <li>アイテムB</li>
-    <li>アイテムC</li>
-  </ul>
-  <ul>
-    <li>アイテムA</li>
-    <li>アイテムB</li>
-    <li>アイテムC</li>
-  </ul>
+    <div class="content-section">
+      <h2>カウンター機能</h2>
+      <p>カウンターの値を増減させてみてください。</p>
+      <div class="counter-section">
+        <div class="counter" id="counter">0</div>
+        <button class="btn counter-btn" onclick="decrementCounter()">-1</button>
+        <button class="btn counter-btn" onclick="incrementCounter()">+1</button>
+        <button class="btn counter-btn" onclick="resetCounter()">リセット</button>
+      </div>
+    </div>
+
+    <div class="content-section list-section">
+      <div class="list-container">
+        <h3 class="list-title">機能リスト A</h3>
+        <ul>
+          <li>レスポンシブデザイン</li>
+          <li>アニメーション効果</li>
+          <li>インタラクティブ要素</li>
+        </ul>
+      </div>
+      <div class="list-container">
+        <h3 class="list-title">機能リスト B</h3>
+        <ul>
+          <li>モダンなスタイリング</li>
+          <li>ホバーエフェクト</li>
+          <li>カウンター機能</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="content-section form-section">
+      <h2>お問い合わせフォーム</h2>
+      <p>お気軽にお問い合わせください。</p>
+      <form onsubmit="handleSubmit(event)">
+        <div class="form-group">
+          <label class="form-label" for="name">お名前</label>
+          <input type="text" id="name" class="form-input" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="email">メールアドレス</label>
+          <input type="email" id="email" class="form-input" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="message">メッセージ</label>
+          <textarea id="message" class="form-input" rows="4" required></textarea>
+        </div>
+        <button type="submit" class="btn submit-btn">送信</button>
+      </form>
+    </div>
+  </div>
+
+  <div class="notification" id="notification"></div>
+
+  <script>
+    let counterValue = 0;
+
+    function showNotification(message) {
+      const notification = document.getElementById('notification');
+      notification.textContent = message;
+      notification.classList.add('show');
+
+      setTimeout(() => {
+        notification.classList.remove('show');
+      }, 3000);
+    }
+
+    function incrementCounter() {
+      counterValue++;
+      updateCounter();
+      showNotification(`カウンターが ${counterValue} になりました`);
+    }
+
+    function decrementCounter() {
+      counterValue--;
+      updateCounter();
+      showNotification(`カウンターが ${counterValue} になりました`);
+    }
+
+    function resetCounter() {
+      counterValue = 0;
+      updateCounter();
+      showNotification('カウンターがリセットされました');
+    }
+
+    function updateCounter() {
+      document.getElementById('counter').textContent = counterValue;
+    }
+
+    function handleSubmit(event) {
+      event.preventDefault();
+      const name = document.getElementById('name').value;
+      const email = document.getElementById('email').value;
+      const message = document.getElementById('message').value;
+
+      showNotification(`ありがとうございます！${name}様からのお問い合わせを受け付けました。`);
+
+      // フォームをリセット
+      event.target.reset();
+    }
+
+    // ページ読み込み時のアニメーション
+    document.addEventListener('DOMContentLoaded', function () {
+      const sections = document.querySelectorAll('.content-section');
+      sections.forEach((section, index) => {
+        section.style.opacity = '0';
+        section.style.transform = 'translateY(30px)';
+
+        setTimeout(() => {
+          section.style.transition = 'all 0.6s ease';
+          section.style.opacity = '1';
+          section.style.transform = 'translateY(0)';
+        }, index * 200);
+      });
+    });
+  </script>
 </body>
 
 </html>

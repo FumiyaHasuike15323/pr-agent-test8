@@ -103,5 +103,6 @@ extra_instructions = """
 """
 
 [github_action_config]
-auto_review = true
-auto_describe = true
+auto_review = false
+auto_describe = false
+auto_code_suggestions = false
