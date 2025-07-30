@@ -85,3 +85,8 @@ extra_instructions = """
 - カテゴリがない場合はスキップして構いません．
 - 対象ファイルや機能が特定できる場合は括弧などで補足してください（例：`auth/register.ts`）．
 """
+
+[github_app]
+pr_commands = [
+    "/update_changelog"
+]
