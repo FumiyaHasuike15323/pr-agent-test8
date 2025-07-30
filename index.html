@@ -4,9 +4,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Ultra Rich Web App</title>
+  <title>Rich Web App</title>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <style>
     :root {
       --primary-color: #3498db;
@@ -48,7 +47,7 @@
     }
 
     .container {
-      max-width: 1400px;
+      max-width: 1200px;
       margin: 0 auto;
       background: rgba(255, 255, 255, 0.95);
       border-radius: 20px;
@@ -182,61 +181,6 @@
       left: 100%;
     }
 
-    .game-section {
-      background: linear-gradient(145deg, #e8f4fd, #d1ecf1);
-      border: 1px solid #bee5eb;
-    }
-
-    .game-container {
-      text-align: center;
-      padding: 20px;
-    }
-
-    .game-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 10px;
-      max-width: 300px;
-      margin: 20px auto;
-    }
-
-    .game-cell {
-      aspect-ratio: 1;
-      background: white;
-      border: 2px solid var(--primary-color);
-      border-radius: 10px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 2em;
-      font-weight: bold;
-      cursor: pointer;
-      transition: all 0.3s ease;
-    }
-
-    .game-cell:hover {
-      background: var(--primary-color);
-      color: white;
-      transform: scale(1.05);
-    }
-
-    .game-cell.winner {
-      background: var(--secondary-color);
-      color: white;
-      animation: pulse 0.5s ease-in-out;
-    }
-
-    .chart-section {
-      background: linear-gradient(145deg, #fff8e1, #ffecb3);
-      border: 1px solid #ffc107;
-    }
-
-    .chart-container {
-      position: relative;
-      height: 300px;
-      margin: 20px 0;
-    }
-
     .list-section {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -363,39 +307,6 @@
       box-shadow: 0 8px 25px rgba(231, 76, 60, 0.4);
     }
 
-    .progress-section {
-      background: linear-gradient(145deg, #f0f8ff, #e6f3ff);
-      border: 1px solid #b3d9ff;
-    }
-
-    .progress-bar {
-      width: 100%;
-      height: 20px;
-      background: #e9ecef;
-      border-radius: 10px;
-      overflow: hidden;
-      margin: 20px 0;
-    }
-
-    .progress-fill {
-      height: 100%;
-      background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
-      border-radius: 10px;
-      transition: width 0.5s ease;
-      position: relative;
-    }
-
-    .progress-fill::after {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: -100%;
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
-      animation: shimmer 2s infinite;
-    }
-
     @keyframes fadeInDown {
       from {
         opacity: 0;
@@ -420,28 +331,6 @@
       }
     }
 
-    @keyframes pulse {
-
-      0%,
-      100% {
-        transform: scale(1);
-      }
-
-      50% {
-        transform: scale(1.1);
-      }
-    }
-
-    @keyframes shimmer {
-      0% {
-        left: -100%;
-      }
-
-      100% {
-        left: 100%;
-      }
-    }
-
     .notification {
       position: fixed;
       top: 20px;
@@ -458,30 +347,6 @@
 
     .notification.show {
       transform: translateX(0);
-    }
-
-    .floating-action {
-      position: fixed;
-      bottom: 30px;
-      right: 30px;
-      width: 60px;
-      height: 60px;
-      background: var(--primary-color);
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: white;
-      font-size: 1.5em;
-      cursor: pointer;
-      box-shadow: 0 4px 15px rgba(52, 152, 219, 0.3);
-      transition: all 0.3s ease;
-      z-index: 1000;
-    }
-
-    .floating-action:hover {
-      transform: scale(1.1);
-      box-shadow: 0 8px 25px rgba(52, 152, 219, 0.4);
     }
 
     @media (max-width: 768px) {
@@ -501,10 +366,6 @@
       .list-section {
         grid-template-columns: 1fr;
       }
-
-      .game-grid {
-        max-width: 250px;
-      }
     }
   </style>
 </head>
@@ -515,8 +376,8 @@
       <button class="theme-toggle" onclick="toggleTheme()">
         <i class="fas fa-moon"></i>
       </button>
-      <h1>Ultra Rich Web Application</h1>
-      <p class="subtitle">次世代のインタラクティブWebアプリケーション</p>
+      <h1>Rich Web Application</h1>
+      <p class="subtitle">モダンでインタラクティブなWebアプリケーション</p>
     </div>
 
     <div class="content-section">
@@ -532,53 +393,7 @@
         <button class="btn" onclick="showNotification('ボタン3がクリックされました！')">
           <i class="fas fa-gem"></i> ボタン3
         </button>
-        <button class="btn" onclick="showNotification('ボタン4がクリックされました！')">
-          <i class="fas fa-crown"></i> ボタン4
-        </button>
-        <button class="btn" onclick="showNotification('ボタン5がクリックされました！')">
-          <i class="fas fa-rocket"></i> ボタン5
-        </button>
-        <button class="btn" onclick="showNotification('ボタン6がクリックされました！')">
-          <i class="fas fa-bolt"></i> ボタン6
-        </button>
       </div>
-    </div>
-
-    <div class="content-section game-section">
-      <h2><i class="fas fa-gamepad"></i> ミニゲーム</h2>
-      <p>三目並べゲームをお楽しみください！</p>
-      <div class="game-container">
-        <div class="game-grid" id="gameGrid">
-          <div class="game-cell" onclick="makeMove(0)"></div>
-          <div class="game-cell" onclick="makeMove(1)"></div>
-          <div class="game-cell" onclick="makeMove(2)"></div>
-          <div class="game-cell" onclick="makeMove(3)"></div>
-          <div class="game-cell" onclick="makeMove(4)"></div>
-          <div class="game-cell" onclick="makeMove(5)"></div>
-          <div class="game-cell" onclick="makeMove(6)"></div>
-          <div class="game-cell" onclick="makeMove(7)"></div>
-          <div class="game-cell" onclick="makeMove(8)"></div>
-        </div>
-        <button class="btn" onclick="resetGame()">ゲームリセット</button>
-        <p id="gameStatus">プレイヤー X の番です</p>
-      </div>
-    </div>
-
-    <div class="content-section chart-section">
-      <h2><i class="fas fa-chart-line"></i> インタラクティブチャート</h2>
-      <p>データの可視化をお楽しみください。</p>
-      <div class="chart-container">
-        <canvas id="myChart"></canvas>
-      </div>
-    </div>
-
-    <div class="content-section progress-section">
-      <h2><i class="fas fa-tasks"></i> プログレスバー</h2>
-      <p>進捗状況を視覚的に確認できます。</p>
-      <div class="progress-bar">
-        <div class="progress-fill" id="progressFill" style="width: 0%"></div>
-      </div>
-      <button class="btn" onclick="updateProgress()">進捗更新</button>
     </div>
 
     <div class="content-section">
@@ -614,7 +429,7 @@
           <li>モダンなスタイリング</li>
           <li>ホバーエフェクト</li>
           <li>カウンター機能</li>
-          <li>ミニゲーム</li>
+          <li>通知システム</li>
         </ul>
       </div>
     </div>
@@ -644,17 +459,8 @@
 
   <div class="notification" id="notification"></div>
 
-  <div class="floating-action" onclick="scrollToTop()">
-    <i class="fas fa-arrow-up"></i>
-  </div>
-
   <script>
     let counterValue = 0;
-    let currentPlayer = 'X';
-    let gameBoard = ['', '', '', '', '', '', '', '', ''];
-    let gameActive = true;
-    let progressValue = 0;
-    let chart;
 
     // テーマ切り替え
     function toggleTheme() {
@@ -706,125 +512,6 @@
       document.getElementById('counter').textContent = counterValue;
     }
 
-    // 三目並べゲーム
-    function makeMove(index) {
-      if (gameBoard[index] === '' && gameActive) {
-        gameBoard[index] = currentPlayer;
-        document.querySelectorAll('.game-cell')[index].textContent = currentPlayer;
-
-        if (checkWinner()) {
-          document.getElementById('gameStatus').textContent = `プレイヤー ${currentPlayer} の勝利！`;
-          gameActive = false;
-          showNotification(`プレイヤー ${currentPlayer} が勝利しました！`);
-          highlightWinner();
-        } else if (gameBoard.every(cell => cell !== '')) {
-          document.getElementById('gameStatus').textContent = '引き分けです！';
-          gameActive = false;
-          showNotification('引き分けです！');
-        } else {
-          currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
-          document.getElementById('gameStatus').textContent = `プレイヤー ${currentPlayer} の番です`;
-        }
-      }
-    }
-
-    function checkWinner() {
-      const winConditions = [
-        [0, 1, 2], [3, 4, 5], [6, 7, 8], // 横
-        [0, 3, 6], [1, 4, 7], [2, 5, 8], // 縦
-        [0, 4, 8], [2, 4, 6] // 斜め
-      ];
-
-      return winConditions.some(condition => {
-        return condition.every(index => {
-          return gameBoard[index] === currentPlayer;
-        });
-      });
-    }
-
-    function highlightWinner() {
-      const winConditions = [
-        [0, 1, 2], [3, 4, 5], [6, 7, 8],
-        [0, 3, 6], [1, 4, 7], [2, 5, 8],
-        [0, 4, 8], [2, 4, 6]
-      ];
-
-      winConditions.forEach(condition => {
-        if (condition.every(index => gameBoard[index] === currentPlayer)) {
-          condition.forEach(index => {
-            document.querySelectorAll('.game-cell')[index].classList.add('winner');
-          });
-        }
-      });
-    }
-
-    function resetGame() {
-      gameBoard = ['', '', '', '', '', '', '', '', ''];
-      currentPlayer = 'X';
-      gameActive = true;
-      document.querySelectorAll('.game-cell').forEach(cell => {
-        cell.textContent = '';
-        cell.classList.remove('winner');
-      });
-      document.getElementById('gameStatus').textContent = 'プレイヤー X の番です';
-      showNotification('ゲームがリセットされました');
-    }
-
-    // プログレスバー
-    function updateProgress() {
-      progressValue += Math.random() * 20;
-      if (progressValue > 100) progressValue = 100;
-      document.getElementById('progressFill').style.width = progressValue + '%';
-      showNotification(`進捗が ${Math.round(progressValue)}% になりました`);
-    }
-
-    // チャート初期化
-    function initChart() {
-      const ctx = document.getElementById('myChart').getContext('2d');
-      chart = new Chart(ctx, {
-        type: 'line',
-        data: {
-          labels: ['1月', '2月', '3月', '4月', '5月', '6月'],
-          datasets: [{
-            label: '売上',
-            data: [12, 19, 3, 5, 2, 3],
-            borderColor: '#3498db',
-            backgroundColor: 'rgba(52, 152, 219, 0.1)',
-            tension: 0.4
-          }, {
-            label: '利益',
-            data: [8, 15, 2, 4, 1, 2],
-            borderColor: '#2ecc71',
-            backgroundColor: 'rgba(46, 204, 113, 0.1)',
-            tension: 0.4
-          }]
-        },
-        options: {
-          responsive: true,
-          maintainAspectRatio: false,
-          plugins: {
-            legend: {
-              labels: {
-                color: getComputedStyle(document.body).getPropertyValue('--text-color')
-              }
-            }
-          },
-          scales: {
-            y: {
-              ticks: {
-                color: getComputedStyle(document.body).getPropertyValue('--text-color')
-              }
-            },
-            x: {
-              ticks: {
-                color: getComputedStyle(document.body).getPropertyValue('--text-color')
-              }
-            }
-          }
-        }
-      });
-    }
-
     // フォーム送信
     function handleSubmit(event) {
       event.preventDefault();
@@ -836,14 +523,6 @@
 
       // フォームをリセット
       event.target.reset();
-    }
-
-    // スクロールトップ
-    function scrollToTop() {
-      window.scrollTo({
-        top: 0,
-        behavior: 'smooth'
-      });
     }
 
     // ページ読み込み時のアニメーション
@@ -859,9 +538,6 @@
           section.style.transform = 'translateY(0)';
         }, index * 200);
       });
-
-      // チャート初期化
-      initChart();
     });
 
     // キーボードショートカット
@@ -871,10 +547,6 @@
           case 'd':
             event.preventDefault();
             toggleTheme();
-            break;
-          case 'r':
-            event.preventDefault();
-            resetGame();
             break;
         }
       }
