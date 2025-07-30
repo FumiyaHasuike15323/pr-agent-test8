@@ -26,7 +26,7 @@ jobs:
           SUMMARY_FILE=$(mktemp)
           echo "## 📝 確認すべきPull Request一覧" > "$SUMMARY_FILE"
           
-          git log origin/master..HEAD --grep="^Merge pull request #" | \
+          git log origin/main..HEAD --grep="^Merge pull request #" | \
           sed -n 's/.*#\([0-9]*\).*/\1/p' | \
           while read -r pr_number; do
             pr_title=$(gh pr view "$pr_number" --json title --jq '.title')
