@@ -7,38 +7,21 @@ on:
     types: [created, edited]
 
 jobs:
-  # stagingブランチからmasterブランチへのPRの場合の自動実行
-  pr_agent_auto_job:
-    if: github.event.sender.type != 'Bot' && github.base_ref == 'main' && github.head_ref == 'develop'
+  pr_agent_job:
+    # ボットからのイベントは無視し、PRに関連するイベントの場合のみ実行
+    if: github.event.sender.type != 'Bot' && (github.event_name == 'pull_request' || github.event.issue.pull_request)
     runs-on: ubuntu-latest
     permissions:
       issues: write
       pull-requests: write
       contents: write
     steps:
-      - name: PR Agent (Auto)
-        id: pr-agent-auto
+      - name: PR Agent
+        id: pr-agent
         uses: Codium-ai/pr-agent@main
         env:
           OPENAI_KEY: ${{ secrets.OPENAI_KEY }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           github_action_config.auto_review: "false"
-          github_action_config.auto_describe: "true"
+          github_action_config.auto_describe: "false"
           github_action_config.auto_improve: "false"
-
-
-  # その他のPRや手動コマンドの場合
-  pr_agent_manual_job:
-    if: github.event.sender.type != 'Bot' && !(github.base_ref == 'master' && github.head_ref == 'staging')
-    runs-on: ubuntu-latest
-    permissions:
-      issues: write
-      pull-requests: write
-      contents: write
-    steps:
-      - name: PR Agent (Manual)
-        id: pr-agent-manual
-        uses: Codium-ai/pr-agent@main
-        env:
-          OPENAI_KEY: ${{ secrets.OPENAI_KEY }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
