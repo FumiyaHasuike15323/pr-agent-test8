@@ -8,7 +8,7 @@ on:
 
 jobs:
   generate-pr-summary:
-    if: github.head_ref == 'develop'
+    if: github.head_ref == 'staging'
     runs-on: ubuntu-latest
     permissions:
       pull-requests: write
@@ -25,17 +25,26 @@ jobs:
         run: |
           SUMMARY_FILE=$(mktemp)
           echo "## 📝 確認すべきPull Request一覧" > "$SUMMARY_FILE"
-          
+
           git log origin/main..HEAD --grep="^Merge pull request #" | \
           sed -n 's/.*#\([0-9]*\).*/\1/p' | \
           while read -r pr_number; do
             pr_title=$(gh pr view "$pr_number" --json title --jq '.title')
             
+            # developからstagingへのマージコミットを除外
             if [ -n "$pr_title" ]; then
-              echo "- [ ] :twisted_rightwards_arrows: [${pr_title} #${pr_number}](https://github.com/$GITHUB_REPOSITORY/pull/$pr_number)" >> "$SUMMARY_FILE"
+              # PRの詳細情報を取得して、ベースブランチとヘッドブランチを確認
+              pr_info=$(gh pr view "$pr_number" --json baseRefName,headRefName --jq '.baseRefName + " " + .headRefName')
+              base_branch=$(echo "$pr_info" | cut -d' ' -f1)
+              head_branch=$(echo "$pr_info" | cut -d' ' -f2)
+              
+              # developからstagingへのマージでない場合のみ追加
+              if [ "$head_branch" != "develop" ] || [ "$base_branch" != "staging" ]; then
+                echo "- [ ] :twisted_rightwards_arrows: [${pr_title} #${pr_number}](https://github.com/$GITHUB_REPOSITORY/pull/$pr_number)" >> "$SUMMARY_FILE"
+              fi
             fi
           done
-          
+
           echo "summary_path=$SUMMARY_FILE" >> "$GITHUB_OUTPUT"
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
