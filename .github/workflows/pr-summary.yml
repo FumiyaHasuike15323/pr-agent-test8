@@ -26,24 +26,52 @@ jobs:
           SUMMARY_FILE=$(mktemp)
           echo "## 📝 確認すべきPull Request一覧" > "$SUMMARY_FILE"
 
+          # マージ者ごとにPRをグループ化するための一時ファイル
+          MERGER_FILE=$(mktemp)
+
           git log origin/main..HEAD --grep="^Merge pull request #" | \
           sed -n 's/.*#\([0-9]*\).*/\1/p' | \
           while read -r pr_number; do
-            pr_title=$(gh pr view "$pr_number" --json title --jq '.title')
+            # PRの詳細情報を取得
+            pr_data=$(gh pr view "$pr_number" --json title,baseRefName,headRefName,mergedBy)
             
-            # developからstagingへのマージコミットを除外
-            if [ -n "$pr_title" ]; then
-              # PRの詳細情報を取得して、ベースブランチとヘッドブランチを確認
-              pr_info=$(gh pr view "$pr_number" --json baseRefName,headRefName --jq '.baseRefName + " " + .headRefName')
-              base_branch=$(echo "$pr_info" | cut -d' ' -f1)
-              head_branch=$(echo "$pr_info" | cut -d' ' -f2)
+            if [ -n "$pr_data" ]; then
+              pr_title=$(echo "$pr_data" | jq -r '.title')
+              base_branch=$(echo "$pr_data" | jq -r '.baseRefName')
+              head_branch=$(echo "$pr_data" | jq -r '.headRefName')
+              merger_login=$(echo "$pr_data" | jq -r '.mergedBy.login // empty')
               
-              # developからstagingへのマージでない場合のみ追加
-              if [ "$head_branch" != "develop" ] || [ "$base_branch" != "staging" ]; then
-                echo "- [ ] :twisted_rightwards_arrows: [${pr_title} #${pr_number}](https://github.com/$GITHUB_REPOSITORY/pull/$pr_number)" >> "$SUMMARY_FILE"
+              # developからstagingへのPRは除外
+              is_develop_to_staging=false
+              if [ "$head_branch" == "develop" ] && [ "$base_branch" == "staging" ]; then
+                is_develop_to_staging=true
+              fi
+              
+              if [ "$is_develop_to_staging" == false ] && [ -n "$merger_login" ]; then
+                # マージ者とPR情報を一時ファイルに保存
+                echo "${merger_login}|${pr_title}|${pr_number}" >> "$MERGER_FILE"
               fi
             fi
           done
+
+          # マージ者ごとにグループ化して出力
+          if [ -s "$MERGER_FILE" ]; then
+            # マージ者でソートして重複を除去
+            sort "$MERGER_FILE" | uniq | \
+            awk -F'|' '{
+              merger = $1
+              title = $2
+              pr_number = $3
+              if (merger != prev_merger) {
+                if (prev_merger != "") {
+                  print ""
+                }
+                print "@" merger
+                prev_merger = merger
+              }
+              print "- [ ] :twisted_rightwards_arrows: [" title " #" pr_number "](https://github.com/$GITHUB_REPOSITORY/pull/" pr_number ")"
+            }' >> "$SUMMARY_FILE"
+          fi
 
           echo "summary_path=$SUMMARY_FILE" >> "$GITHUB_OUTPUT"
         env:
