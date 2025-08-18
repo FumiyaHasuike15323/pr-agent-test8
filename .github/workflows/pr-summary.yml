@@ -58,7 +58,7 @@ jobs:
           if [ -s "$MERGER_FILE" ]; then
             # マージ者でソートして重複を除去
             sort "$MERGER_FILE" | uniq | \
-            awk -F'|' '{
+            awk -F'|' -v repo="$GITHUB_REPOSITORY" '{
               merger = $1
               title = $2
               pr_number = $3
@@ -69,7 +69,7 @@ jobs:
                 print "@" merger
                 prev_merger = merger
               }
-              print "- [ ] :twisted_rightwards_arrows: [" title " #" pr_number "](https://github.com/$GITHUB_REPOSITORY/pull/" pr_number ")"
+              print "- [ ] :twisted_rightwards_arrows: [" title " #" pr_number "](https://github.com/" repo "/pull/" pr_number ")"
             }' >> "$SUMMARY_FILE"
           fi
 
